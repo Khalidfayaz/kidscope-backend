@@ -18,18 +18,19 @@ from langchain.chains import RetrievalQA
 
 report_bp = Blueprint("report", __name__)
 
-CORS(app, resources={
+CORS(report_bp, resources={
     r"/*": {
         "origins": [
             "http://localhost:3000",
             "http://127.0.0.1:3000",
+            "https://oohr-erp.web.app",
         ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
 })
 
-@app.after_request
+@report_bp.after_request
 def after_request(response):
     origin = request.headers.get('Origin')
     allowed_origins = [
