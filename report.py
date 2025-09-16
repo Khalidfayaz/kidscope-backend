@@ -15,7 +15,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 
 # -------------------- Flask App & CORS --------------------
-from flask import Blueprint
+
 report_bp = Blueprint("report", __name__)
 
 CORS(app, resources={
