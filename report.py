@@ -15,7 +15,9 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 
 # -------------------- Flask App & CORS --------------------
-app = Flask(__name__)
+from flask import Blueprint
+report_bp = Blueprint("report", __name__)
+
 CORS(app, resources={
     r"/*": {
         "origins": [
@@ -267,11 +269,11 @@ def get_short_fallback_questions(report_data, personal_info):
 
 
 # -------------------- Routes --------------------
-@app.route('/rag', methods=['OPTIONS'])
+@report_bp.route('/rag', methods=['OPTIONS'])
 def handle_options():
     return jsonify({'message': 'Preflight request accepted'}), 200
 
-@app.route("/rag", methods=["POST"])
+@report_bp.route("/rag", methods=["POST"])
 def rag():
     try:
         data = request.get_json()
@@ -362,7 +364,7 @@ Comprehensive Child Profile Analysis Request:
         return jsonify({"error": "Failed to generate report", "details": str(e)}), 500
 
 # 🔹 NEW ROUTE: Generate discussion questions based on report and personal info
-@app.route("/discussion-questions", methods=["POST"])
+@report_bp.route("/discussion-questions", methods=["POST"])
 def discussion_questions():
     try:
         data = request.get_json()
@@ -393,7 +395,7 @@ def discussion_questions():
 
 # In report.py, update the discussion endpoints for better responses
 
-@app.route("/discussion-followup", methods=["POST"])
+@report_bp.route("/discussion-followup", methods=["POST"])
 def discussion_followup():
     try:
         data = request.get_json()
@@ -513,7 +515,7 @@ def discussion_followup():
             ]
         }), 200
 
-@app.route("/discussion-free", methods=["POST"])
+@report_bp.route("/discussion-free", methods=["POST"])
 def discussion_free():
     try:
         data = request.get_json()
@@ -634,6 +636,4 @@ def discussion_free():
         }), 200
 
 
-# -------------------- Main --------------------
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+
