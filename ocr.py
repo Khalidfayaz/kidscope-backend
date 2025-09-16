@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
+ocr_bp = Blueprint("ocr", __name__)
+CORS(ocr_bp)
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -174,7 +174,7 @@ def extract_data_from_excel(file_content, filename):
 # =======================
 # API ROUTES
 # =======================
-@app.route("/api/extract-marksheet", methods=["POST"])
+@ocr_bp.route("/api/extract-marksheet", methods=["POST"])
 def extract_marksheet():
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
@@ -301,12 +301,6 @@ def extract_marksheet():
 
     return jsonify({"filename": filename, "pages_processed": len(images), "results": results})
 
-@app.route("/api/health", methods=["GET"])
+@ocr_bp.route("/api/health", methods=["GET"])
 def health():
     return jsonify({"status": "healthy", "service": "marksheet-extractor"})
-
-# =======================
-# MAIN
-# =======================
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
