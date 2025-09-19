@@ -23,7 +23,9 @@ CORS(report_bp, resources={
         "origins": [
             "http://localhost:3000",
             "http://127.0.0.1:3000",
-            "https://oohr-erp.web.app",
+            "https://oohr-kidscope-ai.web.app",
+            "https://kidscope.ai",
+            "www.kidscope.ai",
         ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
@@ -37,6 +39,9 @@ def after_request(response):
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "https://oohr-erp.web.app",
+        "https://oohr-kidscope-ai.web.app",
+        "https://kidscope.ai",
+        "www.kidscope.ai",
     ]
     if origin in allowed_origins:
         response.headers.add('Access-Control-Allow-Origin', origin)
